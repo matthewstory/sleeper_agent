@@ -1,7 +1,8 @@
 #include <Python.h>
 
 /* Return result of sleeper_agent._get_state_info() as a C string */
-char * sleeper_agent_state(void)
+static char *
+get_state(char *attr)
 {
      char *rv = NULL;
      PyGILState_STATE gstate;
@@ -11,28 +12,20 @@ char * sleeper_agent_state(void)
           PyObject_Call(
                PyObject_GetAttrString(
                     PyImport_ImportModule("sleeper_agent"),
-                    "_get_state_info"),
+                    attr),
                Py_BuildValue("()"), NULL));
      PyGILState_Release(gstate);
 
      return rv;
 }
 
+char * sleeper_agent_state(void)
+{
+	return get_state("_get_state_info");
+}
 char * sleeper_agent_memstate(void)
 {
-     char *rv = NULL;
-     PyGILState_STATE gstate;
-
-     gstate = PyGILState_Ensure();
-     rv = PyString_AsString(
-          PyObject_Call(
-               PyObject_GetAttrString(
-                    PyImport_ImportModule("sleeper_agent"),
-                    "_get_mem_info"),
-               Py_BuildValue("()"), NULL));
-     PyGILState_Release(gstate);
-
-     return rv;
+	return get_state("_get_mem_info");
 }
 
 

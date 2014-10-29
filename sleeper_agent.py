@@ -1,6 +1,7 @@
 import sys, traceback
 import gc
 import collections
+import itertools
 import _sleeper_agent_activation
 
 def _sizeof_fmt(num):
@@ -35,8 +36,11 @@ def _get_mem_info():
         obj_map[type(obj)]['count'] += 1
         obj_map[type(obj)]['size'] += sys.getsizeof(obj)
 
-    return "\n".join(
-        "{size:>8} {count:>8} object{s} {type_:>50}".format(type_=type_, count=val['count'],
-                                                            s='' if val['count'] == 1 else 's',
-                                                            size=_sizeof_fmt(val['size']))
-        for type_, val in sorted(obj_map.iteritems(), key=lambda v: -v[1]['size']))
+    return "\n".join(itertools.chain(('### Memory Usage'),
+        ("{size:>8} {count:>8} object{s} {type_:>50}".format(
+            type_=type_,
+            count=val['count'],
+            s='' if val['count'] == 1 else 's',
+            size=_sizeof_fmt(val['size']))
+        for type_, val in sorted(obj_map.iteritems(),
+                                 key=lambda v: -v[1]['size']))))
