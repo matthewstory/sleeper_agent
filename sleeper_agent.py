@@ -36,7 +36,7 @@ def _get_mem_info():
         obj_map[type(obj)]['count'] += 1
         obj_map[type(obj)]['size'] += sys.getsizeof(obj)
 
-    return "\n".join(itertools.chain(('### Memory Usage'),
+    return "\n".join(itertools.chain(('### Memory Usage',),
         ("{size:>8} {count:>8} object{s} {type_:>50}".format(
             type_=type_,
             count=val['count'],
