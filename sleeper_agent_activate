@@ -10,6 +10,8 @@ parser.add_option('-v', '--verbose', action='store_true', dest='verbose',
 parser.add_option('--gdb', dest='gdb', default='gdb', metavar='GDB',
                   action='store', type='string',
                   help='Specify gdb binary to call')
+parser.add_option('-m', '--memory', action='store_true', dest='memory',
+                  help='Output current memory usage stats')
 
 (opts, args) = parser.parse_args()
 
@@ -23,6 +25,8 @@ for pid in args:
         script.write("set verbose off\nset complaints 0\n")
     script.write("attach %d\n" % pid)
     script.write('printf "%s", (char*)sleeper_agent_state()\n')
+    if opts.memory:
+        script.write('printf "%s", (char*)sleeper_agent_memstate()\n')
     script.flush()
 
     subprocess.check_call([opts.gdb, '-batch', '-x', script.name], stderr=stderr)
