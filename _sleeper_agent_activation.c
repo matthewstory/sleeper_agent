@@ -45,7 +45,7 @@ sleeper_agent_memstate_pyobject(PyObject *self, PyObject *args)
 static PyMethodDef SleeperAgentMethods[] = {
      {"sleeper_agent_state",  sleeper_agent_state_pyobject, METH_VARARGS,
       "Return the sleeper agent state as a Python string."},
-	 {"sleeper_agend_memstate", sleeper_agent_memstate_pyobject, METH_VARARGS,
+	 {"sleeper_agent_memstate", sleeper_agent_memstate_pyobject, METH_VARARGS,
 	  "Return the sleeper agent memory state as a Python string."},
      {NULL, NULL, 0, NULL}
 };
